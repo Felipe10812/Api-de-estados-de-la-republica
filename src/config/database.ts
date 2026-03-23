@@ -1,17 +1,17 @@
-import sqlite3 from 'sqlite3';
-import { open, Database } from 'sqlite';
+import { createClient, Client } from '@libsql/client';
+import { config } from './index';
 import { logger } from './logger';
 
 class DatabaseConexion {
-    private static instancia: Database | null = null;
+    private static instancia: Client | null = null;
 
-    static async conectar(): Promise<Database> {
+    static async conectar(): Promise<Client> {
         if (!this.instancia) {
-            this.instancia = await open({
-                filename: './mexico.db', // El archivo que crearemos con el seeder
-                driver: sqlite3.Database
+            this.instancia = createClient({
+                url: config.database.url,
+                authToken: config.database.token,
             });
-            logger.info('Conexión a SQLite establecida correctamente.');
+            logger.info('Conexión a Turso establecida correctamente.');
         }
         return this.instancia;
     }
@@ -20,7 +20,7 @@ class DatabaseConexion {
         if (this.instancia) {
             await this.instancia.close();
             this.instancia = null;
-            logger.info('Conexión a SQLite cerrada.');
+            logger.info('Conexión a Turso cerrada.');
         }
     }
 }

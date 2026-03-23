@@ -22,9 +22,9 @@ class Server {
 
     private async dbConection(): Promise<void> {
         try {
-            // Llamamos a nuestro Singleton de SQLite
+            // Llamamos a nuestro Singleton de Turso
             await DatabaseConexion.conectar();
-            console.log('Base de datos SQLite lista para recibir consultas.');
+            console.log('Base de datos Turso lista para recibir consultas.');
         } catch (error) {
             console.error('Error crítico al conectar a la base de datos:', error);
         }

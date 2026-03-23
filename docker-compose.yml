@@ -1,0 +1,27 @@
+services:
+  api:
+    build: .
+    container_name: api-mexico-estados
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    environment:
+      - PORT=3000
+      - NODE_ENV=development
+    restart: always
+
+  # Servicio para ejecutar el seeder y poblar la base de datos
+  # Puedes ejecutarlo con: docker compose run seed
+  seed:
+    build: .
+    container_name: api-mexico-seed
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    env_file:
+      - .env
+    command: npm run seed
