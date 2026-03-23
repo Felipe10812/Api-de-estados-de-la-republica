@@ -1,0 +1,11 @@
+# Dependencias de Node.js
+node_modules/
+
+# Archivos de construcción
+dist/
+
+# Archivos de entorno
+.env
+
+# Logs
+*.log

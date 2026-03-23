@@ -1,0 +1,25 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# Archivo raíz, no buscar más configuraciones en directorios superiores.
+root = true
+
+# Configuración global para todos los archivos
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+
+# Archivos TypeScript y JavaScript
+[*.{js,jsx,ts,tsx}]
+indent_size = 4
+max_line_length = 120
+
+# Archivos de configuración y datos
+[*.{json,yml,yaml}]
+indent_size = 2
+
+# Los archivos Markdown tienen reglas de espacio específicas
+[*.md]
+trim_trailing_whitespace = false
