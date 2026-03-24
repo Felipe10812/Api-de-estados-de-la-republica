@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { UbicacionService } from "../services/ubicacion.service";
+import { UbicacionService } from '../services/ubicacion.service.js';
 
 export class UbicacionController {
     constructor(private readonly ubicacion: UbicacionService) { }

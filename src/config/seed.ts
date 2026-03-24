@@ -1,7 +1,7 @@
 import fs from 'fs';
 import readline from 'readline';
-import { logger } from './logger';
-import { config } from '../config';
+import { config } from './index.js';
+import { logger } from './logger.js';
 import { createClient, InStatement } from '@libsql/client';
 
 async function poblarBaseDeDatos() {

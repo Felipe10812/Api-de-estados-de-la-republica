@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { UbicacionController } from '../controllers/ubicacion.controller';
-import { UbicacionService } from '../services/ubicacion.service';
-import DatabaseConexion from '../config/database';
-import { UbicacionRepositorio } from '../repositories/ubicacion.repository.sqlite';
-import { cpParamSchema, estadoParamSchema, validarParams } from '../middlewares/validator.middleware';
+import DatabaseConexion from '../config/database.js';
+import { UbicacionRepositorio } from '../repositories/ubicacion.repository.sqlite.js';
+import { UbicacionService } from '../services/ubicacion.service.js';
+import { UbicacionController } from '../controllers/ubicacion.controller.js';
+import { cpParamSchema, estadoParamSchema, validarParams } from '../middlewares/validator.middleware.js';
 
 const router = Router();
 

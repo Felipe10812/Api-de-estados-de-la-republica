@@ -1,14 +1,18 @@
-import { Database } from "sqlite";
-import { logger } from "../config/logger";
-import { InformacionPostal, IUbicacionRepository } from "../interfaces/ubicacion.interface";
+import { Client } from "@libsql/client";
+import { logger } from "../config/logger.js";
+import { InformacionPostal, IUbicacionRepository } from "../interfaces/ubicacion.interface.js";
 
 export class UbicacionRepositorio implements IUbicacionRepository {
-    constructor(private readonly db: Database) { }
+    private db: Client;
+
+    constructor(db: Client) {
+        this.db = db;
+    }
 
     async obtenerEstados(): Promise<string[]> {
         try {
-            const rows = await this.db.all('SELECT id, nombre FROM estados ORDER BY nombre ASC');
-            return rows.map(row => row.nombre);
+            const result = await this.db.execute('SELECT id, nombre FROM estados ORDER BY nombre ASC');
+            return result.rows.map(row => String(row.nombre));
         } catch (error) {
             logger.error(`Error SQL en obtenerEstados: ${error}`);
             throw new Error('Error al consultar los estados');
@@ -24,9 +28,9 @@ export class UbicacionRepositorio implements IUbicacionRepository {
                 WHERE e.nombre = ?
                 ORDER BY m.nombre ASC
             `;
-            const rows = await this.db.all(query, [estado]);
+            const result = await this.db.execute(query, [estado]);
 
-            return rows.length > 0 ? rows.map(row => row.nombre) : null;
+            return result.rows.length > 0 ? result.rows.map(row => String(row.nombre)) : null;
         } catch (error) {
             logger.error(`Error SQL en obtenerMunicipios: ${error}`);
             throw new Error('Error al consultar los municipios');
@@ -42,16 +46,22 @@ export class UbicacionRepositorio implements IUbicacionRepository {
                 JOIN estados e ON m.estado_id = e.id
                 WHERE c.codigo_postal = ?
             `;
-            const rows = await this.db.all(query, [cp]);
+            const result = await this.db.execute({
+                sql: query,
+                args: [cp]
+            });
 
-            if (rows.length === 0) return null;
+            if (result.rows.length === 0) return null;
+
+            const firstRow = result.rows[0];
+            if (!firstRow) return null;
 
             return {
-                estado: rows[0].estado,
-                municipio: rows[0].municipio,
-                colonias: rows.map(row => ({
-                    nombre: row.colonia,
-                    tipo: row.tipo_asentamiento
+                estado: String(firstRow.estado),
+                municipio: String(firstRow.municipio),
+                colonias: result.rows.map(row => ({
+                    nombre: String(row.colonia),
+                    tipo: String(row.tipo_asentamiento)
                 }))
             };
         } catch (error) {
@@ -68,10 +78,10 @@ export class UbicacionRepositorio implements IUbicacionRepository {
                 LEFT JOIN municipios m ON m.estado_id = e.id
                 ORDER BY e.nombre ASC, m.nombre ASC
             `;
-            const rows = await this.db.all(query);
+            const result = await this.db.execute(query);
 
             const estadosMap: { [key: string]: string[] } = {};
-            rows.forEach(row => {
+            result.rows.forEach(row => {
                 if (typeof row.estado === 'string') {
                     let municipios = estadosMap[row.estado];
 
@@ -81,7 +91,7 @@ export class UbicacionRepositorio implements IUbicacionRepository {
                     }
 
                     if (row.municipio) {
-                        municipios.push(row.municipio);
+                        municipios.push(String(row.municipio));
                     }
                 }
             });
@@ -105,16 +115,22 @@ export class UbicacionRepositorio implements IUbicacionRepository {
                 JOIN estados e ON m.estado_id = e.id
                 WHERE m.nombre = ?
             `;
-            const rows = await this.db.all(query, [municipio]);
+            const result = await this.db.execute({
+                sql: query,
+                args: [municipio]
+            });
 
-            if (rows.length === 0) return null;
+            if (result.rows.length === 0) return null;
+
+            const firstRow = result.rows[0];
+            if (!firstRow) return null;
 
             return {
-                estado: rows[0].estado,
-                municipio: rows[0].municipio,
-                colonias: rows.map(row => ({
-                    nombre: row.colonia,
-                    tipo: row.tipo_asentamiento
+                estado: String(firstRow.estado),
+                municipio: String(firstRow.municipio),
+                colonias: result.rows.map(row => ({
+                    nombre: String(row.colonia),
+                    tipo: String(row.tipo_asentamiento)
                 }))
             };
         } catch (error) {

@@ -1,10 +1,10 @@
 import express, { Application } from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
-import { config } from '../config';
-import DatabaseConexion from '../config/database';
-import ubicacionRoutes from '../routes/ubicacion.routes';
-import { swaggerSpec } from '../config/swagger';
+import { config } from '../config/index.js';
+import DatabaseConexion from '../config/database.js';
+import ubicacionRoutes from '../routes/ubicacion.routes.js';
+import { swaggerSpec } from '../config/swagger.js';
 
 class Server {
     public app: Application;

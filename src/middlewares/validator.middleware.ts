@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
-import { logger } from '../config/logger';
+import { logger } from '../config/logger.js';
 
 // --- ESQUEMAS DE VALIDACIÓN ---
 

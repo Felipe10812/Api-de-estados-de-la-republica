@@ -1,4 +1,4 @@
-import { IUbicacionRepository, InformacionPostal } from "../interfaces/ubicacion.interface";
+import { InformacionPostal, IUbicacionRepository } from "../interfaces/ubicacion.interface.js";
 
 export class UbicacionService {
     constructor(private readonly repository: IUbicacionRepository) { }
