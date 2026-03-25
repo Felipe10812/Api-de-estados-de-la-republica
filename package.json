@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon --exec \"node --env-file=.env --loader ts-node/esm\" src/index.ts",
+    "dev": "nodemon --exec \"node --env-file=.env --loader ts-node/esm --no-warnings\" src/index.ts",
     "build": "tsc",
     "start": "node --env-file=.env dist/index.js",
     "seed": "node --env-file=.env -r ts-node/register src/config/seed.ts"
