@@ -12,10 +12,10 @@ services:
     environment:
       - PORT=3000
       - NODE_ENV=development
+      - CONNECTION_URL=${CONNECTION_URL}
+      - TOKEN_SECRET=${TOKEN_SECRET}
     restart: always
 
-  # Servicio para ejecutar el seeder y poblar la base de datos
-  # Puedes ejecutarlo con: docker compose run seed
   seed:
     build: .
     container_name: api-mexico-seed
@@ -24,4 +24,7 @@ services:
       - /usr/src/app/node_modules
     env_file:
       - .env
+    environment:
+      - CONNECTION_URL=${CONNECTION_URL}
+      - TOKEN_SECRET=${TOKEN_SECRET}
     command: npm run seed
